@@ -5,7 +5,6 @@
 //
 //
 
-#import <sqlite3.h>
 #import <objc/runtime.h>
 #import <CoreData/CoreData.h>
 
@@ -38,22 +37,5 @@ typedef NS_ENUM(NSInteger, EncryptedStoreError)
 + (NSPersistentStoreCoordinator *)makeStoreWithStructOptions:(EncryptedStoreOptions *) options managedObjectModel:(NSManagedObjectModel *)objModel error:(NSError * __autoreleasing*)error;
 + (NSPersistentStoreCoordinator *)makeStore:(NSManagedObjectModel *) objModel
                                    passcode:(NSString *) passcode error:(NSError * __autoreleasing*)error;
-
-
-- (NSNumber *)maximumObjectIDInTable:(NSString *)table;
-- (NSDictionary *)whereClauseWithFetchRequest:(NSFetchRequest *)request;
-- (void)bindWhereClause:(NSDictionary *)clause toStatement:(sqlite3_stmt *)statement;
-- (NSString *)columnsClauseWithProperties:(NSArray *)properties;
-- (NSString *) joinedTableNameForComponents: (NSArray *) componentsArray forRelationship:(BOOL)forRelationship;
-- (id)valueForProperty:(NSPropertyDescription *)property
-           inStatement:(sqlite3_stmt *)statement
-               atIndex:(int)index;
-- (NSString *)foreignKeyColumnForRelationship:(NSRelationshipDescription *)relationship;
-- (void)bindProperty:(NSPropertyDescription *)property
-           withValue:(id)value
-              forKey:(NSString *)key
-         toStatement:(sqlite3_stmt *)statement
-             atIndex:(int)index;
-
 
 @end
