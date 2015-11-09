@@ -1178,7 +1178,7 @@ static void dbsqliteRegExp(sqlite3_context *context, int argc, const char **argv
     if (statement == NULL || sqlite3_finalize(statement) != SQLITE_OK) {
         return NO;
     }
-    
+
     // create new table
     // TODO - add some tests around this. I think with a child entity
     // this won't actually create a table and the above initialized
@@ -1190,10 +1190,10 @@ static void dbsqliteRegExp(sqlite3_context *context, int argc, const char **argv
     if (![self createTableForEntity:destinationEntity error:error]) {
         return NO;
     }
-    
+
     // get columns
-    NSMutableArray *sourceColumns = [NSMutableArray array];
-    NSMutableArray *destinationColumns = [NSMutableArray array];
+    NSMutableArray *sourceColumns = [@[ @"__objectid" ] mutableCopy];
+    NSMutableArray *destinationColumns = [@[ @"__objectid" ] mutableCopy];
     [[mapping attributeMappings] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSExpression *expression = [obj valueExpression];
         if (expression != nil) {
@@ -1202,7 +1202,7 @@ static void dbsqliteRegExp(sqlite3_context *context, int argc, const char **argv
             [sourceColumns addObject:source];
         }
     }];
-    
+
     [[mapping relationshipMappings] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSRelationshipDescription *destinationRelationship = [destinationEntity relationshipsByName][[obj name]];
         NSRelationshipDescription * relationship = [sourceEntity relationshipsByName][([destinationRelationship renamingIdentifier] ? [destinationRelationship renamingIdentifier] : [obj name])];
