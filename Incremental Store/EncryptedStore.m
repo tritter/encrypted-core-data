@@ -2277,7 +2277,7 @@ static void dbsqliteRegExp(sqlite3_context *context, int argc, const char **argv
         else if ([property isKindOfClass:[NSRelationshipDescription class]]) {
             NSRelationshipDescription *desc = (NSRelationshipDescription *)property;
             
-            if (![desc isToMany]) {
+            if (![desc isToMany] && [value respondsToSelector:@selector(objectID)]) {
                 NSNumber *number = [self referenceObjectForObjectID:[value objectID]];
                 sqlite3_bind_int64(statement, index, [number unsignedLongLongValue]);
             }
