@@ -1976,22 +1976,6 @@ static void dbsqliteRegExp(sqlite3_context *context, int argc, const char **argv
     }
     else if ([predicate isKindOfClass:[NSComparisonPredicate class]]){
         NSComparisonPredicate *comparisonPred = (NSComparisonPredicate*) predicate;
-        NSString *predicateString = [predicate predicateFormat];
-        if (predicateString != nil ) {
-            NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"\\b([a-zA-Z]\\w*\\.[^= ]+)\\b" options:0 error:nil];
-            NSArray* matches = [regex matchesInString:predicateString options:0 range:NSMakeRange(0, [predicateString length])];
-            for ( NSTextCheckingResult* match in matches )
-            {
-                NSString* matchText = [predicateString substringWithRange:[match range]];
-                if ([matchText hasSuffix:@".@count"]) {
-                    // @count queries should be handled by sub-expressions rather than joins
-                    continue;
-                }
-                if ([self maybeAddJoinStatementsForKey:matchText toStatementArray:joinStatementsArray withExistingStatementSet:joinStatementsSet rootEntity:entity]) {
-                    [fetchRequest setReturnsDistinctResults:YES];
-                }
-            }
-        }
         NSExpression *leftExp = [comparisonPred leftExpression];
         if ([leftExp expressionType] == NSKeyPathExpressionType) {
             id property = [[[fetchRequest entity] propertiesByName] objectForKey:[leftExp keyPath]];
